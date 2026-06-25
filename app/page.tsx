@@ -26,7 +26,7 @@ export default async function Home({
     }),
   };
 
-  const [jobs, total] = await Promise.all([
+  const [rawJobs, total] = await Promise.all([
     db.job.findMany({
       orderBy: { createdAt: "desc" },
       skip: (currentPage - 1) * PAGE_SIZE,
@@ -35,6 +35,12 @@ export default async function Home({
     }),
     db.job.count({ where }),
   ]);
+
+  const jobs = rawJobs.map((job) => ({
+    ...job,
+    createdAt: job.createdAt.toISOString(),
+    updatedAt: job.updatedAt.toISOString(),
+  }));
 
   return (
     <main>

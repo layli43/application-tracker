@@ -3,6 +3,11 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import type { job } from "@/app/generated/prisma/client";
+
+type SerializedJob = Omit<job, "createdAt" | "updatedAt"> & {
+  createdAt: string;
+  updatedAt: string;
+};
 import { StatusBadge } from "@/components/StatusBadge";
 import { ALL_STATUSES, type Status } from "@/lib/statuses";
 import {
@@ -35,7 +40,7 @@ export default function JobTable({
   page,
   pageSize,
 }: {
-  jobs: job[];
+  jobs: SerializedJob[];
   total: number;
   page: number;
   pageSize: number;
@@ -77,10 +82,18 @@ export default function JobTable({
           {jobs.map((job) => (
             <TableRow key={job.id} className="hover:bg-muted/40">
               <TableCell className="font-medium">{job.title}</TableCell>
-              <TableCell className="text-muted-foreground">{job.company}</TableCell>
-              <TableCell className="text-muted-foreground">{job.location}</TableCell>
-              <TableCell className="text-muted-foreground">{job.salary ?? "—"}</TableCell>
-              <TableCell className="text-muted-foreground">{job.platform}</TableCell>
+              <TableCell className="text-muted-foreground">
+                {job.company}
+              </TableCell>
+              <TableCell className="text-muted-foreground">
+                {job.location}
+              </TableCell>
+              <TableCell className="text-muted-foreground">
+                {job.salary ?? "—"}
+              </TableCell>
+              <TableCell className="text-muted-foreground">
+                {job.platform}
+              </TableCell>
               <TableCell>
                 <Select
                   value={pendingStatus[job.id] ?? job.status}
