@@ -22,9 +22,9 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    env_file: .env
     environment:
       DATABASE_URL: postgresql://jobtracker:jobtracker@db:5432/jobtracker
-      API_SECRET: ${API_SECRET}
 
 volumes:
   postgres_data:
