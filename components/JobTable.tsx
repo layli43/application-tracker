@@ -130,7 +130,7 @@ export default function JobTable({
                 />
               </TableCell>
               <TableCell className="text-muted-foreground text-sm">
-                {new Date(job.createdAt).toLocaleDateString()}
+                {job.createdAt.slice(0, 10)}
               </TableCell>
             </TableRow>
           ))}
